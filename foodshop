@@ -1,0 +1,107 @@
+def display_menu():
+    print("\n===== Food Menu  =====")
+    print("Drinks:")
+    print("1. Hot coffee ☕ - 150.00 PHP")
+    print("2. Wide 🍷 - 100.00 PHP")
+    print("3. Cocktail 🍸 - 150.00 PHP")
+    print("4. Water 💧 - 30.00 PHP")
+    print("5. Beer 🍺 - 200.00 PHP")
+    print("6. milk 🥛 - 80.00 PHP")
+
+    print("\nFood:")
+    print("1. Pizza 🍕 - 300.00 PHP")
+    print("2. Hambuger 🍔 - 150.00 PHP")
+    print("3. Tacos  🌮 - 200.00 PHP")
+    print("4. Green Salad 🥗 - 100.00 PHP")
+    print("5. Spaghetti 🍝 - 80.00 PHP")
+    print("6. French Fries 🍟 - 50.00 PHP")
+    print("===========================")
+
+# Prices for drinks and bread
+drink_prices = {
+    1: 150.00,
+    2: 100.00,
+    3: 150.00,
+    4: 30.00,
+    5: 200.00,
+    6: 80.00
+}
+
+food_prices = {
+    1: 300.00,
+    2: 150.00,
+    3: 200.00,
+    4: 100.00,
+    5: 80.00,
+    6: 50.00
+}
+
+# Marking unavailable items (replace 0 for N/A)
+unavailable_items = [3, 5]  # Example: Juice and Milkshake are unavailable
+
+def calculate_total(order):
+    total = 0
+    for item, quantity in order.items():
+        if item in drink_prices:
+            total += drink_prices[item] * quantity
+        elif item in food_prices:
+            total += food_prices[item] * quantity
+    return total
+
+def food_shop():
+    while True:
+        display_menu()
+
+        order = {}
+
+        # Drinks order
+        drink_choice = input("Would you like to order drinks? (yes/no): ").strip().lower()
+        if drink_choice == "yes":
+            while True:
+                drink_type = int(input("Enter drink number (1-6): "))
+                if drink_type in unavailable_items:
+                    print("Sorry, this item is not available.")
+                    continue
+                drink_quantity = int(input("Enter quantity: "))
+                order[drink_type] = drink_quantity
+                more_drinks = input("Would you like to order more drinks? (yes/no): ").strip().lower()
+                if more_drinks == "no":
+                    break
+
+        # food order
+        bread_choice = input("Would you like to order food? (yes/no): ").strip().lower()
+        if bread_choice == "yes":
+            while True:
+                bread_type = int(input("Enter food number (1-6): "))
+                if bread_type in unavailable_items:
+                    print("Sorry, this item is not available.")
+                    continue
+                food_quantity = int(input("Enter quantity: "))
+                order[bread_type] = food_quantity
+                more_food = input("Would you like to order more food? (yes/no): ").strip().lower()
+                if more_food == "no":
+                    break
+
+        # Calculate total
+        total_price = calculate_total(order)
+        print(f"\nTotal Price: {total_price:.2f} PHP")
+
+        # Payment and change
+        while True:
+            payment = float(input("Enter payment amount (PHP): "))
+            if payment >= total_price:
+                change = payment - total_price
+                print(f"Order received! 🛎️")
+                print(f"Change: {change:.2f} PHP")
+                break
+            else:
+                print("Insufficient amount. Please enter a valid payment.")
+
+        # Restart option
+        restart = input("Would you like to make another order? (yes/no): ").strip().lower()
+        if restart == "no":
+            print("Thank you for visiting the shop! 🍽️")
+            break
+
+# Run the cafe shop system
+food_shop()
